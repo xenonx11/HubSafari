@@ -13,7 +13,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import type { MenuItem } from '@/lib/types';
 import { useEffect } from 'react';
-import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface MenuItemFormProps {
   open: boolean;
@@ -69,119 +68,120 @@ export default function MenuItemForm({ open, onOpenChange, onSubmit, item }: Men
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[480px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[480px] max-h-[90vh] flex flex-col">
         <DialogHeader>
           <DialogTitle>{item ? 'Edit Menu Item' : 'Add New Menu Item'}</DialogTitle>
           <DialogDescription>
             Fill in the details for the menu item. Click save when you're done.
           </DialogDescription>
         </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-4 py-2">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g. Spaghetti Carbonara" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="Describe the dish..." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-             <div className="grid grid-cols-2 gap-4">
-                <FormField
+        <div className="overflow-y-auto pr-6 -mr-6 pl-1 -ml-1">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-4 py-2">
+              <FormField
                 control={form.control}
-                name="price"
+                name="name"
                 render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Price</FormLabel>
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
                     <FormControl>
-                        <Input type="number" step="0.01" placeholder="15.99" {...field} />
+                      <Input placeholder="e.g. Spaghetti Carbonara" {...field} />
                     </FormControl>
                     <FormMessage />
-                    </FormItem>
+                  </FormItem>
                 )}
-                />
-                <FormField
+              />
+              <FormField
                 control={form.control}
-                name="category"
+                name="description"
                 render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>Category</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Select a category" />
-                        </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                            <SelectItem value="Appetizers">Appetizers</SelectItem>
-                            <SelectItem value="Main Courses">Main Courses</SelectItem>
-                            <SelectItem value="Desserts">Desserts</SelectItem>
-                            <SelectItem value="Drinks">Drinks</SelectItem>
-                        </SelectContent>
-                    </Select>
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="Describe the dish..." {...field} />
+                    </FormControl>
                     <FormMessage />
-                    </FormItem>
+                  </FormItem>
                 )}
-                />
-            </div>
-            <FormField
-              control={form.control}
-              name="image"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image URL</FormLabel>
-                  <FormControl>
-                    <Input placeholder="https://placehold.co/600x400.png" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
+              />
+              <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                  control={form.control}
+                  name="price"
+                  render={({ field }) => (
+                      <FormItem>
+                      <FormLabel>Price</FormLabel>
+                      <FormControl>
+                          <Input type="number" step="0.01" placeholder="15.99" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                      </FormItem>
+                  )}
+                  />
+                  <FormField
+                  control={form.control}
+                  name="category"
+                  render={({ field }) => (
+                      <FormItem>
+                      <FormLabel>Category</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                          <SelectTrigger>
+                              <SelectValue placeholder="Select a category" />
+                          </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                              <SelectItem value="Appetizers">Appetizers</SelectItem>
+                              <SelectItem value="Main Courses">Main Courses</SelectItem>
+                              <SelectItem value="Desserts">Desserts</SelectItem>
+                              <SelectItem value="Drinks">Drinks</SelectItem>
+                          </SelectContent>
+                      </Select>
+                      <FormMessage />
+                      </FormItem>
+                  )}
+                  />
+              </div>
+              <FormField
                 control={form.control}
-                name="featured"
+                name="image"
                 render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                        <div className="space-y-0.5">
-                            <FormLabel>Featured</FormLabel>
-                            <FormDescription>
-                                Show this item on the homepage.
-                            </FormDescription>
-                        </div>
-                         <FormControl>
-                            <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                            />
-                        </FormControl>
-                    </FormItem>
+                  <FormItem>
+                    <FormLabel>Image URL</FormLabel>
+                    <FormControl>
+                      <Input placeholder="https://placehold.co/600x400.png" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-                />
-
-            <DialogFooter className="sticky bottom-0 bg-background/95 p-4 -m-4 mt-4">
-              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-              <Button type="submit">Save Changes</Button>
-            </DialogFooter>
-          </form>
-        </Form>
+              />
+              <FormField
+                  control={form.control}
+                  name="featured"
+                  render={({ field }) => (
+                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                          <div className="space-y-0.5">
+                              <FormLabel>Featured</FormLabel>
+                              <FormDescription>
+                                  Show this item on the homepage.
+                              </FormDescription>
+                          </div>
+                          <FormControl>
+                              <Checkbox
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                              />
+                          </FormControl>
+                      </FormItem>
+                  )}
+                  />
+                <DialogFooter className="pt-4">
+                  <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
+                  <Button type="submit">Save Changes</Button>
+                </DialogFooter>
+            </form>
+          </Form>
+        </div>
       </DialogContent>
     </Dialog>
   );
