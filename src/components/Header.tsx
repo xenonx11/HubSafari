@@ -22,32 +22,32 @@ export default function Header() {
   return (
     <>
       <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur-sm">
-        <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-bold font-headline text-primary">{RESTAURANT_NAME}</span>
+            <span className="text-xl font-bold font-headline text-primary">{RESTAURANT_NAME}</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
-              <Link key={link.href} href={link.href} className="text-lg font-medium text-foreground/80 transition-colors hover:text-primary">
+              <Link key={link.href} href={link.href} className="text-base font-medium text-foreground/80 transition-colors hover:text-primary">
                 {link.label}
               </Link>
             ))}
           </nav>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <Button
               variant="ghost"
               size="icon"
-              className="relative"
+              className="relative h-9 w-9"
               onClick={() => setCartOpen(true)}
               aria-label={`Shopping cart with ${itemCount} items`}
             >
-              <ShoppingCart className="h-6 w-6" />
+              <ShoppingCart className="h-5 w-5" />
               {itemCount > 0 && (
                 <Badge
                   variant="default"
-                  className="absolute -top-2 -right-2 h-6 w-6 justify-center rounded-full bg-primary text-primary-foreground p-0"
+                  className="absolute -top-1 -right-1 h-5 w-5 justify-center rounded-full bg-primary text-primary-foreground p-0 text-xs"
                 >
                   {itemCount}
                 </Badge>
@@ -56,10 +56,10 @@ export default function Header() {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden"
+              className="md:hidden h-9 w-9"
               onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
             >
-              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
+              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <MenuIcon className="h-5 w-5" />}
               <span className="sr-only">Toggle menu</span>
             </Button>
           </div>
@@ -71,7 +71,7 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-lg font-medium text-foreground/80 transition-colors hover:text-primary"
+                  className="text-base font-medium text-foreground/80 transition-colors hover:text-primary"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useCart } from '@/hooks/useCart';
 import type { MenuItem } from '@/lib/types';
-import { ShoppingCart,Zap } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 interface MenuItemCardProps {
@@ -36,18 +36,18 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
           <Image src={item.image} alt={item.name} layout="fill" className="object-cover" data-ai-hint="food meal"/>
         </div>
       </CardHeader>
-      <CardContent className="flex-grow p-4">
-        <CardTitle className="text-xl font-headline mb-1">{item.name}</CardTitle>
-        <CardDescription className="font-body text-base min-h-[40px]">{item.description}</CardDescription>
+      <CardContent className="flex-grow p-3">
+        <CardTitle className="text-base font-headline mb-1">{item.name}</CardTitle>
+        <CardDescription className="font-body text-xs min-h-[3em]">{item.description}</CardDescription>
       </CardContent>
-      <CardFooter className="flex justify-between items-center p-4 pt-0 mt-auto">
-        <p className="text-2xl font-bold font-headline text-primary">${item.price.toFixed(2)}</p>
-        <div className="flex gap-2">
-            <Button variant="outline" onClick={handleAddToCart}>
-                <ShoppingCart className="mr-2 h-4 w-4" /> Add
+      <CardFooter className="flex flex-col items-start p-3 pt-0 mt-auto">
+        <p className="text-lg font-bold font-headline text-primary mb-2">${item.price.toFixed(2)}</p>
+        <div className="flex justify-between w-full gap-2">
+            <Button variant="outline" size="sm" onClick={handleAddToCart} className="flex-1 text-xs px-2 h-8">
+                <ShoppingCart className="mr-1 h-3 w-3" /> Add
             </Button>
-            <Button onClick={handleOrderNow}>
-                <Zap className="mr-2 h-4 w-4" /> Order
+            <Button size="sm" onClick={handleOrderNow} className="flex-1 text-xs px-2 h-8">
+                Order
             </Button>
         </div>
       </CardFooter>

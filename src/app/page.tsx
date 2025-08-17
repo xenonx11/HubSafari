@@ -19,30 +19,30 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative h-[60vh] md:h-[80vh] w-full flex items-center justify-center text-center text-white">
+      <section className="relative h-[50vh] md:h-[70vh] w-full flex items-center justify-center text-center text-white">
         <div className="absolute inset-0 bg-black/50 z-10" />
         <Image src="https://placehold.co/1920x1080.png" layout="fill" objectFit="cover" alt="Ambiance of the restaurant" className="z-0" data-ai-hint="restaurant ambiance" />
         <div className="relative z-20 container mx-auto px-4">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold font-headline tracking-tight text-shadow-lg">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold font-headline tracking-tight text-shadow-lg">
             Savor the Moment
           </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-lg md:text-xl font-body text-shadow">
+          <p className="mt-3 max-w-xl mx-auto text-md md:text-lg font-body text-shadow">
             Experience authentic flavors, crafted with passion and served with love.
           </p>
-          <Button asChild size="lg" className="mt-8 bg-primary hover:bg-accent text-primary-foreground font-bold text-lg py-6 px-10 rounded-full transition-transform duration-300 hover:scale-105">
+          <Button asChild size="lg" className="mt-6 bg-primary hover:bg-accent text-primary-foreground font-bold text-base py-4 px-8 rounded-full transition-transform duration-300 hover:scale-105">
             <Link href="/menu">View Full Menu</Link>
           </Button>
         </div>
       </section>
 
       {/* Featured Items Section */}
-      <section id="featured" className="py-16 md:py-24 bg-background">
+      <section id="featured" className="py-12 md:py-20 bg-background">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold font-headline">Featured Dishes</h2>
-            <p className="mt-2 text-lg text-muted-foreground">Handpicked by our chef, loved by our guests.</p>
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold font-headline">Featured Dishes</h2>
+            <p className="mt-2 text-md text-muted-foreground">Handpicked by our chef, loved by our guests.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {featuredItems.map((item) => (
               <MenuItemCard key={item.id} item={item} />
             ))}
@@ -53,18 +53,18 @@ export default function Home() {
       <Separator className="my-0"/>
 
       {/* About Us Snippet Section */}
-      <section className="py-16 md:py-24 bg-secondary/50">
-        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
+      <section className="py-12 md:py-20 bg-secondary/50">
+        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center gap-10">
             <div className="md:w-1/2">
                 <Image src="https://placehold.co/800x600.png" width={800} height={600} alt="Our Restaurant" className="rounded-lg shadow-xl" data-ai-hint="restaurant interior" />
             </div>
             <div className="md:w-1/2 text-center md:text-left">
-                <ChefHat className="h-12 w-12 text-primary mx-auto md:mx-0 mb-4" />
-                <h2 className="text-4xl md:text-5xl font-bold font-headline">Our Culinary Story</h2>
-                <p className="mt-4 text-lg text-muted-foreground">
+                <ChefHat className="h-10 w-10 text-primary mx-auto md:mx-0 mb-3" />
+                <h2 className="text-3xl md:text-4xl font-bold font-headline">Our Culinary Story</h2>
+                <p className="mt-3 text-md text-muted-foreground">
                     From a small family kitchen to a beloved neighborhood eatery, TasteBud is the realization of a lifelong dream. We believe in the power of food to bring people together, using only the freshest local ingredients to create dishes that are both comforting and exciting.
                 </p>
-                <Button asChild variant="link" className="mt-6 text-primary text-lg px-0">
+                <Button asChild variant="link" className="mt-4 text-primary text-base px-0">
                     <Link href="/about">Learn More About Us &rarr;</Link>
                 </Button>
             </div>
@@ -72,25 +72,25 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 md:py-24 bg-background">
+      <section className="py-12 md:py-20 bg-background">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold font-headline">From Our Guests</h2>
-            <p className="mt-2 text-lg text-muted-foreground">Don't just take our word for it.</p>
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold font-headline">From Our Guests</h2>
+            <p className="mt-2 text-md text-muted-foreground">Don't just take our word for it.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {testimonials.map((testimonial, index) => (
               <Card key={index} className="bg-secondary/30 border-0 shadow-sm">
                 <CardHeader>
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3">
                     <div className="bg-primary rounded-full p-2 text-primary-foreground">
-                      <Star className="text-accent" fill="currentColor"/>
+                      <Star className="text-accent h-5 w-5" fill="currentColor"/>
                     </div>
-                    <CardTitle className="font-headline text-2xl">{testimonial.name}</CardTitle>
+                    <CardTitle className="font-headline text-xl">{testimonial.name}</CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-base text-muted-foreground italic">"{testimonial.quote}"</p>
+                  <p className="text-sm text-muted-foreground italic">"{testimonial.quote}"</p>
                 </CardContent>
               </Card>
             ))}
