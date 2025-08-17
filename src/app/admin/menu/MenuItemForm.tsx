@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import type { MenuItem } from '@/lib/types';
 import { useEffect } from 'react';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface MenuItemFormProps {
   open: boolean;
@@ -68,7 +69,7 @@ export default function MenuItemForm({ open, onOpenChange, onSubmit, item }: Men
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[480px]">
+      <DialogContent className="sm:max-w-[480px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{item ? 'Edit Menu Item' : 'Add New Menu Item'}</DialogTitle>
           <DialogDescription>
@@ -175,7 +176,7 @@ export default function MenuItemForm({ open, onOpenChange, onSubmit, item }: Men
                 )}
                 />
 
-            <DialogFooter>
+            <DialogFooter className="sticky bottom-0 bg-background/95 p-4 -m-4 mt-4">
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
               <Button type="submit">Save Changes</Button>
             </DialogFooter>
