@@ -56,7 +56,7 @@ export default function AdminDashboardPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Link href="/menu">
+                <Link href="/admin/menu">
                     <Card className="hover:bg-secondary/50 transition-colors">
                         <CardHeader className="flex flex-row items-center gap-4">
                             <ClipboardList className="h-8 w-8 text-primary" />
