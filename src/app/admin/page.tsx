@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from '@/components/ui/button';
-import { ClipboardList, Package, LogOut } from "lucide-react";
+import { ClipboardList, LogOut } from "lucide-react";
 import Link from "next/link";
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -36,7 +36,6 @@ export default function AdminDashboardPage() {
                 </div>
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Skeleton className="h-24 w-full" />
-                    <Skeleton className="h-24 w-full" />
                  </div>
             </div>
         )
@@ -55,7 +54,7 @@ export default function AdminDashboardPage() {
                 </Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-md">
                 <Link href="/admin/menu">
                     <Card className="hover:bg-secondary/50 transition-colors">
                         <CardHeader className="flex flex-row items-center gap-4">
@@ -67,15 +66,6 @@ export default function AdminDashboardPage() {
                         </CardHeader>
                     </Card>
                 </Link>
-                <Card className="hover:bg-secondary/50 transition-colors cursor-pointer">
-                     <CardHeader className="flex flex-row items-center gap-4">
-                        <Package className="h-8 w-8 text-primary" />
-                        <div>
-                            <CardTitle>View Orders</CardTitle>
-                            <CardDescription>See incoming and past orders.</CardDescription>
-                        </div>
-                    </CardHeader>
-                </Card>
             </div>
         </div>
     )

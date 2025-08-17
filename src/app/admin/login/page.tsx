@@ -11,12 +11,14 @@ import { useToast } from '@/hooks/use-toast';
 import { Utensils } from 'lucide-react';
 import { RESTAURANT_NAME } from '@/lib/constants';
 
-// In a real app, this password would not be stored in the frontend.
+// In a real app, this would not be stored in the frontend.
+const ADMIN_EMAIL = "admin@example.com";
 const ADMIN_PASSWORD = "password";
 
 export default function AdminLoginPage() {
     const router = useRouter();
     const { toast } = useToast();
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
@@ -26,7 +28,7 @@ export default function AdminLoginPage() {
 
         // Simulate network request
         setTimeout(() => {
-            if (password === ADMIN_PASSWORD) {
+            if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
                 localStorage.setItem('tastebud-admin-session', 'true');
                 toast({
                     title: "Success!",
@@ -36,8 +38,8 @@ export default function AdminLoginPage() {
             } else {
                 toast({
                     variant: "destructive",
-                    title: "Uh oh! Something went wrong.",
-                    description: "The password you entered is incorrect.",
+                    title: "Login Failed",
+                    description: "Invalid email or password.",
                 });
                 setIsLoading(false);
             }
@@ -54,9 +56,20 @@ export default function AdminLoginPage() {
                             <span className="text-2xl font-bold font-headline text-primary">{RESTAURANT_NAME}</span>
                         </div>
                         <CardTitle className="text-2xl">Admin Login</CardTitle>
-                        <CardDescription>Enter the password to access the dashboard.</CardDescription>
+                        <CardDescription>Enter your credentials to access the dashboard.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="email">Email</Label>
+                            <Input 
+                                id="email" 
+                                type="email" 
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required 
+                                placeholder="admin@example.com"
+                            />
+                        </div>
                         <div className="space-y-2">
                             <Label htmlFor="password">Password</Label>
                             <Input 
