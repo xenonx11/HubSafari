@@ -4,7 +4,7 @@ import MenuItemCard from "@/components/MenuItemCard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Our Menu - TasteBud",
+    title: "Our Menu - HubSafari",
     description: "Explore our delicious selection of appetizers, main courses, desserts, and drinks.",
 };
 
@@ -27,7 +27,7 @@ export default function MenuPage() {
                 </TabsList>
                 {categories.map(category => (
                      <TabsContent key={category} value={category}>
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 mt-6">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 mt-6">
                             {menuItems.filter(item => item.category === category).map(item => (
                                 <MenuItemCard key={item.id} item={item} />
                             ))}

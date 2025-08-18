@@ -6,7 +6,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'TasteBud - Delicious Food, Delivered.',
+  title: 'HubSafari - Delicious Food, Delivered.',
   description: 'A delightful restaurant experience, right at your fingertips.',
   icons: {
     icon: '/favicon.ico',

@@ -5,8 +5,8 @@ import { Metadata } from "next";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-    title: "About Us - TasteBud",
-    description: "Learn about the story, mission, and team behind TasteBud.",
+    title: "About Us - HubSafari",
+    description: "Learn about the story, mission, and team behind HubSafari.",
 };
 
 export default function AboutPage() {
@@ -23,7 +23,7 @@ export default function AboutPage() {
                 <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     <div className="space-y-6 text-lg text-foreground/80">
                         <p>
-                            TasteBud began not in a fancy kitchen, but in the heart of our family home. It was born from generations of shared recipes, Sunday feasts, and the belief that a good meal is more than just food—it's a memory in the making. Our founder, Chef Leo, dreamed of sharing his grandmother's cherished recipes with the world, creating a place where every guest feels like part of the family.
+                            HubSafari began not in a fancy kitchen, but in the heart of our family home. It was born from generations of shared recipes, Sunday feasts, and the belief that a good meal is more than just food—it's a memory in the making. Our founder, Chef Leo, dreamed of sharing his grandmother's cherished recipes with the world, creating a place where every guest feels like part of the family.
                         </p>
                         <p>
                             We opened our doors in 2015 with a simple mission: to serve authentic, high-quality dishes made from locally-sourced ingredients. Every plate that leaves our kitchen is a testament to this commitment, a blend of traditional techniques and a dash of modern creativity.
@@ -59,7 +59,7 @@ export default function AboutPage() {
                 <div className="text-center">
                     <h2 className="text-4xl md:text-5xl font-bold font-headline">Meet the Team</h2>
                     <p className="mt-4 text-xl text-muted-foreground max-w-3xl mx-auto">
-                        The heart and soul of TasteBud.
+                        The heart and soul of HubSafari.
                     </p>
                     <div className="mt-12 flex justify-center gap-8 md:gap-16 flex-wrap">
                         <div className="flex flex-col items-center">
