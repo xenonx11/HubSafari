@@ -12,7 +12,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import type { MenuItem } from '@/lib/types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 interface MenuItemFormProps {
   open: boolean;
@@ -26,7 +27,7 @@ const formSchema = z.object({
   description: z.string().min(10, { message: 'Description must be at least 10 characters.' }),
   price: z.coerce.number().min(0.01, { message: 'Price must be a positive number.' }),
   category: z.enum(['Appetizers', 'Main Courses', 'Desserts', 'Drinks']),
-  image: z.string().url({ message: 'Please enter a valid URL.' }),
+  image: z.string().min(1, { message: 'Please upload an image.' }),
   featured: z.boolean().default(false),
 });
 
@@ -45,6 +46,8 @@ export default function MenuItemForm({ open, onOpenChange, onSubmit, item }: Men
     },
   });
 
+  const imageValue = form.watch('image');
+
   useEffect(() => {
     if (open) {
       if (item) {
@@ -55,7 +58,7 @@ export default function MenuItemForm({ open, onOpenChange, onSubmit, item }: Men
           description: '',
           price: 0,
           category: 'Main Courses',
-          image: 'https://placehold.co/600x400.png',
+          image: '',
           featured: false,
         });
       }
@@ -64,6 +67,17 @@ export default function MenuItemForm({ open, onOpenChange, onSubmit, item }: Men
 
   const handleFormSubmit = (values: MenuItemFormValues) => {
     onSubmit(values, item?.id);
+  };
+  
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        form.setValue('image', reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -147,14 +161,21 @@ export default function MenuItemForm({ open, onOpenChange, onSubmit, item }: Men
                 name="image"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Image URL</FormLabel>
+                    <FormLabel>Image</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://placehold.co/600x400.png" {...field} />
+                        <Input type="file" accept="image/*" onChange={handleImageChange} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
+              {imageValue && (
+                  <div className="flex justify-center rounded-md border p-2">
+                    <Image src={imageValue} alt="Image preview" width={200} height={200} className="object-contain" />
+                  </div>
+              )}
+              
               <FormField
                   control={form.control}
                   name="featured"
