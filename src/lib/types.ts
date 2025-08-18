@@ -1,10 +1,11 @@
 import { ObjectId } from "mongodb";
 
 export interface MenuItem {
-  // MongoDB uses _id as the primary key. When fetching data, 
-  // we can map it to 'id' if needed for client-side consistency.
-  _id?: ObjectId;
-  id: string; // Keep `id` for client-side consistency, will be a string version of _id
+  // When creating a new menu item, _id is optional because MongoDB will generate it.
+  _id?: ObjectId; 
+  // We use 'id' for client-side consistency (e.g., in React keys).
+  // It will be a string version of _id.
+  id: string; 
   name: string;
   description: string;
   price: number;

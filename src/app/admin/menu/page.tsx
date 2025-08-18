@@ -11,9 +11,15 @@ export default async function AdminMenuPage() {
     let menuItems: MenuItem[] = [];
     try {
         const items = await getAllMenuItems();
+        // Manually map to a plain object to avoid serialization errors
         menuItems = items.map(item => ({
-            ...item,
-            id: item._id!.toString(), // Convert ObjectId to string
+            id: item._id.toString(),
+            name: item.name,
+            description: item.description,
+            price: item.price,
+            category: item.category,
+            image: item.image,
+            featured: item.featured || false,
         }));
     } catch (error) {
         console.error("Failed to fetch menu items for admin page:", error);

@@ -7,15 +7,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { getFeaturedMenuItems } from "@/lib/mongodb";
 import { unstable_noStore as noStore } from 'next/cache';
+import type { MenuItem } from "@/lib/types";
 
-async function getFeaturedItems() {
+async function getFeaturedItems(): Promise<MenuItem[]> {
     noStore(); // Ensures the data is fetched dynamically on every request
     try {
         const items = await getFeaturedMenuItems();
-        // Map MongoDB's _id to a string 'id' for client-side components
+        // Manually map to a plain object to avoid serialization errors
         return items.map(item => ({
-            ...item,
-            id: item._id!.toString(),
+            id: item._id.toString(),
+            name: item.name,
+            description: item.description,
+            price: item.price,
+            category: item.category,
+            image: item.image,
+            featured: item.featured || false,
         }));
     } catch (error) {
         console.error("Failed to fetch featured menu items:", error);

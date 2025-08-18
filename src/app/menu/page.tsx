@@ -11,13 +11,19 @@ export const metadata: Metadata = {
     description: "Explore our delicious selection of appetizers, main courses, desserts, and drinks.",
 };
 
-async function getMenuItems() {
+async function getMenuItems(): Promise<MenuItem[]> {
     noStore();
     try {
         const items = await getAllMenuItems();
+        // Manually map to a plain object to avoid serialization errors
         return items.map(item => ({
-            ...item,
-            id: item._id!.toString(),
+            id: item._id.toString(),
+            name: item.name,
+            description: item.description,
+            price: item.price,
+            category: item.category,
+            image: item.image,
+            featured: item.featured || false,
         }));
     } catch (error) {
         console.error("Failed to fetch menu items:", error);
