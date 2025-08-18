@@ -17,7 +17,7 @@ import { useEffect } from 'react';
 interface MenuItemFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: Omit<MenuItem, 'id'>, id?: string) => void;
+  onSubmit: (data: Omit<MenuItem, 'id' | '_id'>, id?: string) => void;
   item: MenuItem | null;
 }
 

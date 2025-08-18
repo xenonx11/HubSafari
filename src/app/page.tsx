@@ -1,14 +1,31 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { menuItems } from "@/data/menu";
 import MenuItemCard from "@/components/MenuItemCard";
 import { Star, ChefHat } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { getFeaturedMenuItems } from "@/lib/mongodb";
+import { unstable_noStore as noStore } from 'next/cache';
 
-export default function Home() {
-  const featuredItems = menuItems.filter(item => item.featured).slice(0, 4);
+async function getFeaturedItems() {
+    noStore(); // Ensures the data is fetched dynamically on every request
+    try {
+        const items = await getFeaturedMenuItems();
+        // Map MongoDB's _id to a string 'id' for client-side components
+        return items.map(item => ({
+            ...item,
+            id: item._id!.toString(),
+        }));
+    } catch (error) {
+        console.error("Failed to fetch featured menu items:", error);
+        return []; // Return an empty array as a fallback
+    }
+}
+
+
+export default async function Home() {
+  const featuredItems = await getFeaturedItems();
 
   const testimonials = [
     { name: "Sarah J.", quote: "The best Italian food I've had outside of Italy! The atmosphere is cozy and the service is impeccable." },
@@ -42,11 +59,17 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-bold font-headline">Featured Dishes</h2>
             <p className="mt-2 text-md text-muted-foreground">Handpicked by our chef, loved by our guests.</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            {featuredItems.map((item) => (
-              <MenuItemCard key={item.id} item={item} />
-            ))}
-          </div>
+          {featuredItems.length > 0 ? (
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+              {featuredItems.map((item) => (
+                <MenuItemCard key={item.id} item={item} />
+              ))}
+            </div>
+          ) : (
+             <div className="text-center text-muted-foreground">
+                <p>Could not load featured dishes. Please check the connection or try again later.</p>
+             </div>
+          )}
         </div>
       </section>
       
@@ -62,7 +85,7 @@ export default function Home() {
                 <ChefHat className="h-10 w-10 text-primary mx-auto md:mx-0 mb-3" />
                 <h2 className="text-3xl md:text-4xl font-bold font-headline">Our Culinary Story</h2>
                 <p className="mt-3 text-md text-muted-foreground">
-                    From a small family kitchen to a beloved neighborhood eatery, TasteBud is the realization of a lifelong dream. We believe in the power of food to bring people together, using only the freshest local ingredients to create dishes that are both comforting and exciting.
+                    From a small family kitchen to a beloved neighborhood eatery, HubSafari is the realization of a lifelong dream. We believe in the power of food to bring people together, using only the freshest local ingredients to create dishes that are both comforting and exciting.
                 </p>
                 <Button asChild variant="link" className="mt-4 text-primary text-base px-0">
                     <Link href="/about">Learn More About Us &rarr;</Link>

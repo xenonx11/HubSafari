@@ -1,15 +1,33 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { menuItems } from "@/data/menu";
 import MenuItemCard from "@/components/MenuItemCard";
 import { Metadata } from "next";
+import { getAllMenuItems } from "@/lib/mongodb";
+import type { MenuItem } from "@/lib/types";
+import { unstable_noStore as noStore } from 'next/cache';
+
 
 export const metadata: Metadata = {
     title: "Our Menu - HubSafari",
     description: "Explore our delicious selection of appetizers, main courses, desserts, and drinks.",
 };
 
+async function getMenuItems() {
+    noStore();
+    try {
+        const items = await getAllMenuItems();
+        return items.map(item => ({
+            ...item,
+            id: item._id!.toString(),
+        }));
+    } catch (error) {
+        console.error("Failed to fetch menu items:", error);
+        return [];
+    }
+}
 
-export default function MenuPage() {
+
+export default async function MenuPage() {
+    const menuItems = await getMenuItems();
     const categories: ('Appetizers' | 'Main Courses' | 'Desserts' | 'Drinks')[] = ['Appetizers', 'Main Courses', 'Desserts', 'Drinks'];
     
     return (
