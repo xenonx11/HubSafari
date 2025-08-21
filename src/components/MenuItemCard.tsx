@@ -3,7 +3,7 @@
 
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useCart } from '@/hooks/useCart';
 import type { MenuItem } from '@/lib/types';
 import { ShoppingCart } from 'lucide-react';
@@ -17,7 +17,8 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
   const { addToCart, setCartOpen } = useCart();
   const { toast } = useToast();
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation(); // prevent card click event
     addToCart(item);
     toast({
       title: "Added to cart!",
@@ -25,39 +26,34 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
     });
   };
 
-  const handleOrderNow = () => {
+  const handleOrderNow = (e: React.MouseEvent) => {
+    e.stopPropagation(); // prevent card click event
     addToCart(item);
     setCartOpen(true);
   }
 
   return (
-    <Card className="flex flex-col overflow-hidden h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-      <div className="relative w-full aspect-[4/3]">
-          <Image src={item.image} alt={item.name} layout="fill" className="object-cover" data-ai-hint="food meal"/>
-          {/* Overlay for mobile view */}
-          <div className="md:hidden absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-          <div className="md:hidden absolute bottom-0 left-0 p-2 w-full">
-            <h3 className="text-white text-sm font-bold font-headline truncate">{item.name}</h3>
-            <p className="text-white text-lg font-bold">₹{item.price.toFixed(2)}</p>
-          </div>
-      </div>
-      <div className="hidden md:flex flex-col flex-grow p-3">
-        <div className="flex-grow">
-          <CardTitle className="text-base font-headline mb-1 truncate">{item.name}</CardTitle>
-          <CardDescription className="font-body text-xs line-clamp-2">{item.description}</CardDescription>
+    <div className="flex flex-col h-full">
+      <Card className="flex flex-col overflow-hidden h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex-grow">
+        <div className="relative w-full aspect-[4/3]">
+            <Image src={item.image} alt={item.name} layout="fill" className="object-cover" data-ai-hint="food meal"/>
         </div>
-        <div className="mt-2">
-            <p className="text-lg font-bold font-headline text-primary mb-2">₹{item.price.toFixed(2)}</p>
-            <div className="flex flex-wrap justify-between w-full gap-2">
-                <Button variant="outline" size="sm" onClick={handleAddToCart} className="flex-grow text-xs px-2 h-8">
-                    <ShoppingCart className="mr-1 h-3 w-3" /> Add
-                </Button>
-                <Button size="sm" onClick={handleOrderNow} className="flex-grow text-xs px-2 h-8">
-                    Order
-                </Button>
+        <div className="p-4 flex-grow flex flex-col">
+            <div className="flex-grow">
+              <CardTitle className="text-lg font-headline mb-1 truncate">{item.name}</CardTitle>
+              <p className="font-body text-sm line-clamp-2 text-muted-foreground">{item.description}</p>
             </div>
+            <p className="text-xl font-bold font-headline text-primary mt-2">₹{item.price.toFixed(2)}</p>
         </div>
+      </Card>
+      <div className="flex flex-wrap justify-between w-full gap-2 mt-2">
+          <Button variant="outline" size="sm" onClick={handleAddToCart} className="flex-grow text-xs px-2 h-9">
+              <ShoppingCart className="mr-1 h-4 w-4" /> Add to Cart
+          </Button>
+          <Button size="sm" onClick={handleOrderNow} className="flex-grow text-xs px-2 h-9">
+              Order Now
+          </Button>
       </div>
-    </Card>
+    </div>
   );
 }
