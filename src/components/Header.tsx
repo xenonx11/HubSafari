@@ -2,15 +2,17 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { ShoppingCart, Menu as MenuIcon, X } from 'lucide-react';
+import { ShoppingCart, Menu as MenuIcon, X, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useCart } from '@/hooks/useCart';
 import CartSheet from '@/components/CartSheet';
 import { RESTAURANT_NAME } from '@/lib/constants';
+import { useTheme } from '@/hooks/useTheme';
 
 export default function Header() {
   const { itemCount, isCartOpen, setCartOpen } = useCart();
+  const { theme, toggleTheme } = useTheme();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
@@ -36,6 +38,16 @@ export default function Header() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-9 w-9"
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+            >
+              <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            </Button>
             <Button
               variant="ghost"
               size="icon"
