@@ -92,25 +92,32 @@ export async function addMenuItem(item: Omit<MenuItem, 'id' | '_id'>) {
 
 export async function updateMenuItem(id: string, itemData: Partial<Omit<MenuItem, 'id' | '_id'>>) {
     const collection = await getMenuItemsCollection();
-    const dataToSet: Partial<Omit<MenuItem, 'id' | '_id'>> = {
-        ...itemData,
-        price: itemData.price,
-        priceHalf: itemData.priceHalf ? Number(itemData.priceHalf) : undefined,
-    };
+    
+    // Create a mutable copy of itemData
+    const dataToUpdate = { ...itemData };
 
-    let updateOperation;
+    // Prepare the update operations
+    const update: { $set: Partial<any>, $unset?: Partial<any> } = { $set: {} };
 
-    if (dataToSet.priceHalf) {
-        updateOperation = { $set: dataToSet };
+    // Coerce priceHalf to a number or handle its absence
+    if (dataToUpdate.priceHalf) {
+        dataToUpdate.priceHalf = Number(dataToUpdate.priceHalf);
     } else {
-        // If priceHalf is not provided or is falsy, remove it from the document
-        updateOperation = { 
-            $set: { ...dataToSet, priceHalf: undefined },
-            $unset: { priceHalf: "" }
-        };
+        // If priceHalf is not present or falsy, unset it in the database
+        if (!update.$unset) update.$unset = {};
+        update.$unset.priceHalf = "";
+        delete dataToUpdate.priceHalf; // Remove it from the $set operation
+    }
+
+    // Set the rest of the data
+    update.$set = dataToUpdate;
+
+    // If $unset is empty, remove it from the update object
+    if (update.$unset && Object.keys(update.$unset).length === 0) {
+        delete update.$unset;
     }
     
-    return collection.updateOne({ _id: new ObjectId(id) }, updateOperation);
+    return collection.updateOne({ _id: new ObjectId(id) }, update);
 }
 
 export async function deleteMenuItem(id: string) {
