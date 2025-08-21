@@ -42,7 +42,7 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
         <CardDescription className="font-body text-xs line-clamp-3">{item.description}</CardDescription>
       </CardContent>
       <CardFooter className="flex flex-col items-start p-3 pt-0 mt-auto">
-        <p className="text-lg font-bold font-headline text-primary mb-2">${item.price.toFixed(2)}</p>
+        <p className="text-lg font-bold font-headline text-primary mb-2">₹{item.price.toFixed(2)}</p>
         <div className="flex flex-wrap justify-between w-full gap-2">
             <Button variant="outline" size="sm" onClick={handleAddToCart} className="flex-grow text-xs px-2 h-8">
                 <ShoppingCart className="mr-1 h-3 w-3" /> Add

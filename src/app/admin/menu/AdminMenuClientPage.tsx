@@ -140,7 +140,7 @@ export default function AdminMenuClientPage({ initialMenuItems }: AdminMenuClien
                                             </TableCell>
                                             <TableCell className="font-medium">{item.name}</TableCell>
                                             <TableCell>{item.category}</TableCell>
-                                            <TableCell>${item.price.toFixed(2)}</TableCell>
+                                            <TableCell>₹{item.price.toFixed(2)}</TableCell>
                                             <TableCell>
                                                 {item.featured && <Badge>Yes</Badge>}
                                             </TableCell>
