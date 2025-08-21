@@ -34,8 +34,14 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
     <Card className="flex flex-col overflow-hidden h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
       <div className="relative w-full aspect-[4/3]">
           <Image src={item.image} alt={item.name} layout="fill" className="object-cover" data-ai-hint="food meal"/>
+          {/* Overlay for mobile view */}
+          <div className="md:hidden absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          <div className="md:hidden absolute bottom-0 left-0 p-2 w-full">
+            <h3 className="text-white text-sm font-bold font-headline truncate">{item.name}</h3>
+            <p className="text-white text-lg font-bold">₹{item.price.toFixed(2)}</p>
+          </div>
       </div>
-      <div className="flex flex-col flex-grow p-3">
+      <div className="hidden md:flex flex-col flex-grow p-3">
         <div className="flex-grow">
           <CardTitle className="text-base font-headline mb-1 truncate">{item.name}</CardTitle>
           <CardDescription className="font-body text-xs line-clamp-2">{item.description}</CardDescription>
