@@ -115,7 +115,8 @@ export default function AdminMenuClientPage({ initialMenuItems }: AdminMenuClien
                                     <TableHead className="w-[80px]">Image</TableHead>
                                     <TableHead>Name</TableHead>
                                     <TableHead>Category</TableHead>
-                                    <TableHead>Price</TableHead>
+                                    <TableHead>Price (Full)</TableHead>
+                                    <TableHead>Price (Half)</TableHead>
                                     <TableHead>Featured</TableHead>
                                     <TableHead className="w-[50px]"></TableHead>
                                 </TableRow>
@@ -127,6 +128,7 @@ export default function AdminMenuClientPage({ initialMenuItems }: AdminMenuClien
                                             <TableCell><Skeleton className="h-16 w-16 rounded-md"/></TableCell>
                                             <TableCell><Skeleton className="h-6 w-32"/></TableCell>
                                             <TableCell><Skeleton className="h-6 w-24"/></TableCell>
+                                            <TableCell><Skeleton className="h-6 w-16"/></TableCell>
                                             <TableCell><Skeleton className="h-6 w-16"/></TableCell>
                                             <TableCell><Skeleton className="h-6 w-12"/></TableCell>
                                             <TableCell><Skeleton className="h-8 w-8"/></TableCell>
@@ -141,6 +143,9 @@ export default function AdminMenuClientPage({ initialMenuItems }: AdminMenuClien
                                             <TableCell className="font-medium">{item.name}</TableCell>
                                             <TableCell>{item.category}</TableCell>
                                             <TableCell>₹{item.price.toFixed(2)}</TableCell>
+                                            <TableCell>
+                                                {item.priceHalf ? `₹${item.priceHalf.toFixed(2)}` : 'N/A'}
+                                            </TableCell>
                                             <TableCell>
                                                 {item.featured && <Badge>Yes</Badge>}
                                             </TableCell>

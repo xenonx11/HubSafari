@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -42,7 +43,7 @@ export default function CartSheet({ open, onOpenChange }: CartSheetProps) {
 
   const placeOrder = (details: UserDetails) => {
     const message = `New Order from ${details.name}!\n\nItems:\n${cartItems
-      .map((item) => `- ${item.quantity} x ${item.name} - ₹${(item.price * item.quantity).toFixed(2)}`)
+      .map((item) => `- ${item.quantity} x ${item.name} (${item.selectedSize}) - ₹${(item.selectedPrice * item.quantity).toFixed(2)}`)
       .join('\n')}\n\nTotal: ₹${cartTotal.toFixed(2)}\n\nDeliver to: ${details.address}\nContact: ${details.phone}`;
     
     const whatsappUrl = `https://wa.me/${RESTAURANT_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
@@ -80,20 +81,20 @@ export default function CartSheet({ open, onOpenChange }: CartSheetProps) {
               <ScrollArea className="h-full pr-6">
                 <div className="flex flex-col gap-4 py-4">
                   {cartItems.map((item) => (
-                    <div key={item.id} className="flex items-center gap-4">
+                    <div key={item.cartId} className="flex items-center gap-4">
                       <Image src={item.image} alt={item.name} width={80} height={80} className="rounded-md object-cover" data-ai-hint="food meal"/>
                       <div className="flex-1">
-                        <h4 className="font-semibold">{item.name}</h4>
-                        <p className="text-sm text-muted-foreground">₹{item.price.toFixed(2)}</p>
+                        <h4 className="font-semibold">{item.name} <span className="text-xs text-muted-foreground capitalize">({item.selectedSize})</span></h4>
+                        <p className="text-sm text-muted-foreground">₹{item.selectedPrice.toFixed(2)}</p>
                         <div className="flex items-center gap-2 mt-2">
-                          <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => updateQuantity(item.id, item.quantity - 1)}><Minus className="h-4 w-4" /></Button>
+                          <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => updateQuantity(item.cartId, item.quantity - 1)}><Minus className="h-4 w-4" /></Button>
                           <span>{item.quantity}</span>
-                          <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => updateQuantity(item.id, item.quantity + 1)}><Plus className="h-4 w-4" /></Button>
+                          <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => updateQuantity(item.cartId, item.quantity + 1)}><Plus className="h-4 w-4" /></Button>
                         </div>
                       </div>
                       <div className="flex flex-col items-end gap-2">
-                        <p className="font-semibold">₹{(item.price * item.quantity).toFixed(2)}</p>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => removeFromCart(item.id)}>
+                        <p className="font-semibold">₹{(item.selectedPrice * item.quantity).toFixed(2)}</p>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => removeFromCart(item.cartId)}>
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>

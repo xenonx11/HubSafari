@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import type { MenuItem } from '@/lib/types';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Image from 'next/image';
 
 interface MenuItemFormProps {
@@ -26,6 +26,7 @@ const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
   description: z.string().min(10, { message: 'Description must be at least 10 characters.' }),
   price: z.coerce.number().min(0.01, { message: 'Price must be a positive number.' }),
+  priceHalf: z.coerce.number().optional().nullable(),
   category: z.enum(['Appetizers', 'Main Courses', 'Desserts', 'Drinks']),
   image: z.string().min(1, { message: 'Please upload an image.' }),
   featured: z.boolean().default(false),
@@ -40,6 +41,7 @@ export default function MenuItemForm({ open, onOpenChange, onSubmit, item }: Men
       name: '',
       description: '',
       price: 0,
+      priceHalf: undefined,
       category: 'Main Courses',
       image: '',
       featured: false,
@@ -51,12 +53,16 @@ export default function MenuItemForm({ open, onOpenChange, onSubmit, item }: Men
   useEffect(() => {
     if (open) {
       if (item) {
-        form.reset(item);
+        form.reset({
+          ...item,
+          priceHalf: item.priceHalf || undefined,
+        });
       } else {
         form.reset({
           name: '',
           description: '',
           price: 0,
+          priceHalf: undefined,
           category: 'Main Courses',
           image: '',
           featured: false,
@@ -66,7 +72,12 @@ export default function MenuItemForm({ open, onOpenChange, onSubmit, item }: Men
   }, [item, open, form]);
 
   const handleFormSubmit = (values: MenuItemFormValues) => {
-    onSubmit(values, item?.id);
+    // Ensure empty string for priceHalf becomes null or undefined
+    const dataToSubmit = {
+      ...values,
+      priceHalf: values.priceHalf || undefined,
+    };
+    onSubmit(dataToSubmit, item?.id);
   };
   
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,7 +135,7 @@ export default function MenuItemForm({ open, onOpenChange, onSubmit, item }: Men
                   name="price"
                   render={({ field }) => (
                       <FormItem>
-                      <FormLabel>Price</FormLabel>
+                      <FormLabel>Price (Full)</FormLabel>
                       <FormControl>
                           <Input type="number" step="0.01" placeholder="499" {...field} />
                       </FormControl>
@@ -132,7 +143,21 @@ export default function MenuItemForm({ open, onOpenChange, onSubmit, item }: Men
                       </FormItem>
                   )}
                   />
-                  <FormField
+                   <FormField
+                  control={form.control}
+                  name="priceHalf"
+                  render={({ field }) => (
+                      <FormItem>
+                      <FormLabel>Price (Half)</FormLabel>
+                      <FormControl>
+                          <Input type="number" step="0.01" placeholder="299 (optional)" {...field} value={field.value ?? ''} />
+                      </FormControl>
+                      <FormMessage />
+                      </FormItem>
+                  )}
+                  />
+              </div>
+               <FormField
                   control={form.control}
                   name="category"
                   render={({ field }) => (
@@ -155,7 +180,6 @@ export default function MenuItemForm({ open, onOpenChange, onSubmit, item }: Men
                       </FormItem>
                   )}
                   />
-              </div>
               <FormField
                 control={form.control}
                 name="image"

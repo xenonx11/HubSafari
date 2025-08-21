@@ -17,6 +17,7 @@ export default async function AdminMenuPage() {
             name: item.name,
             description: item.description,
             price: item.price,
+            priceHalf: item.priceHalf,
             category: item.category,
             image: item.image,
             featured: item.featured || false,

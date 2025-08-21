@@ -20,6 +20,7 @@ async function getFeaturedItems(): Promise<MenuItem[]> {
             name: item.name,
             description: item.description,
             price: item.price,
+            priceHalf: item.priceHalf,
             category: item.category,
             image: item.image,
             featured: item.featured || false,
@@ -79,7 +80,7 @@ export default async function Home() {
             <p className="mt-2 text-md text-muted-foreground">Handpicked by our chef, loved by our guests.</p>
           </div>
           {featuredItems.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {featuredItems.map((item) => (
                 <MenuItemCard key={item.id} item={item} />
               ))}

@@ -1,13 +1,14 @@
+
 "use client";
 
 import React, { createContext, useState, useEffect, useCallback } from 'react';
-import type { CartItem, MenuItem } from '@/lib/types';
+import type { CartItem, MenuItem, Size } from '@/lib/types';
 
 interface CartContextType {
   cartItems: CartItem[];
-  addToCart: (item: MenuItem) => void;
-  removeFromCart: (itemId: string) => void;
-  updateQuantity: (itemId: string, quantity: number) => void;
+  addToCart: (item: MenuItem, size: Size) => void;
+  removeFromCart: (cartId: string) => void;
+  updateQuantity: (cartId: string, quantity: number) => void;
   clearCart: () => void;
   cartTotal: number;
   itemCount: number;
@@ -36,31 +37,44 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem('tastebud-cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const addToCart = useCallback((item: MenuItem) => {
+  const addToCart = useCallback((item: MenuItem, size: Size) => {
     setCartItems((prevItems) => {
-      const existingItem = prevItems.find((cartItem) => cartItem.id === item.id);
+      const cartId = `${item.id}-${size}`;
+      const existingItem = prevItems.find((cartItem) => cartItem.cartId === cartId);
+
       if (existingItem) {
         return prevItems.map((cartItem) =>
-          cartItem.id === item.id
+          cartItem.cartId === cartId
             ? { ...cartItem, quantity: cartItem.quantity + 1 }
             : cartItem
         );
       }
-      return [...prevItems, { ...item, quantity: 1 }];
+      
+      const selectedPrice = size === 'half' && item.priceHalf ? item.priceHalf : item.price;
+
+      const newCartItem: CartItem = {
+        ...item,
+        cartId,
+        quantity: 1,
+        selectedSize: size,
+        selectedPrice,
+      };
+      
+      return [...prevItems, newCartItem];
     });
   }, []);
 
-  const removeFromCart = useCallback((itemId: string) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
+  const removeFromCart = useCallback((cartId: string) => {
+    setCartItems((prevItems) => prevItems.filter((item) => item.cartId !== cartId));
   }, []);
 
-  const updateQuantity = useCallback((itemId: string, quantity: number) => {
+  const updateQuantity = useCallback((cartId: string, quantity: number) => {
     if (quantity <= 0) {
-      removeFromCart(itemId);
+      removeFromCart(cartId);
     } else {
       setCartItems((prevItems) =>
         prevItems.map((item) =>
-          item.id === itemId ? { ...item, quantity } : item
+          item.cartId === cartId ? { ...item, quantity } : item
         )
       );
     }
@@ -71,7 +85,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const cartTotal = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
+    (total, item) => total + item.selectedPrice * item.quantity,
     0
   );
 
