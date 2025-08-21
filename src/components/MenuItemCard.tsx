@@ -3,7 +3,7 @@
 
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardTitle } from '@/components/ui/card';
 import { useCart } from '@/hooks/useCart';
 import type { MenuItem } from '@/lib/types';
 import { ShoppingCart } from 'lucide-react';
@@ -18,7 +18,7 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
   const { toast } = useToast();
 
   const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation(); // prevent card click event
+    e.stopPropagation(); 
     addToCart(item);
     toast({
       title: "Added to cart!",
@@ -27,23 +27,20 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
   };
 
   const handleOrderNow = (e: React.MouseEvent) => {
-    e.stopPropagation(); // prevent card click event
+    e.stopPropagation(); 
     addToCart(item);
     setCartOpen(true);
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <Card className="flex flex-col overflow-hidden h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex-grow">
-        <div className="relative w-full aspect-[4/3]">
+    <div className="flex flex-col h-full group">
+      <Card className="flex-grow overflow-hidden transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-1 relative">
+        <div className="relative w-full aspect-square">
             <Image src={item.image} alt={item.name} layout="fill" className="object-cover" data-ai-hint="food meal"/>
-        </div>
-        <div className="p-4 flex-grow flex flex-col">
-            <div className="flex-grow">
-              <CardTitle className="text-lg font-headline mb-1 truncate">{item.name}</CardTitle>
-              <p className="font-body text-sm line-clamp-2 text-muted-foreground">{item.description}</p>
+             <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+                <CardTitle className="text-lg font-headline text-white truncate">{item.name}</CardTitle>
+                <p className="text-xl font-bold font-headline text-primary mt-1">₹{item.price.toFixed(2)}</p>
             </div>
-            <p className="text-xl font-bold font-headline text-primary mt-2">₹{item.price.toFixed(2)}</p>
         </div>
       </Card>
       <div className="flex flex-wrap justify-between w-full gap-2 mt-2">
