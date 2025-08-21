@@ -8,52 +8,39 @@ import { useCart } from '@/hooks/useCart';
 import type { MenuItem, Size } from '@/lib/types';
 import { ShoppingCart } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  DialogClose,
-} from '@/components/ui/dialog';
 import { useState } from 'react';
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
+
 
 interface MenuItemCardProps {
   item: MenuItem;
 }
 
 export default function MenuItemCard({ item }: MenuItemCardProps) {
-  const { addToCart } = useCart();
+  const { addToCart, setCartOpen } = useCart();
   const { toast } = useToast();
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
+  
   const hasHalfPrice = item.priceHalf && item.priceHalf > 0;
+  const [selectedSize, setSelectedSize] = useState<Size>(hasHalfPrice ? 'half' : 'full');
 
-  const handleAddToCart = (size: Size) => {
-    addToCart(item, size);
+  const handleAddToCart = () => {
+    addToCart(item, selectedSize);
     toast({
       title: "Added to cart!",
-      description: `${item.name} (${size}) is waiting for you.`,
+      description: `${item.name} (${selectedSize}) is waiting for you.`,
     });
-    setIsDialogOpen(false);
-  };
-
-  const handlePrimaryAction = () => {
-    if (hasHalfPrice) {
-      setIsDialogOpen(true);
-    } else {
-      addToCart(item, 'full');
-       toast({
-        title: "Added to cart!",
-        description: `${item.name} is waiting for you.`,
-      });
-    }
   };
   
+  const handleOrderNow = () => {
+    addToCart(item, selectedSize);
+    setCartOpen(true);
+  }
+
   const getPriceDisplay = () => {
     if (hasHalfPrice) {
-      return `₹${item.priceHalf?.toFixed(2)} - ₹${item.price.toFixed(2)}`;
+        const price = selectedSize === 'half' ? item.priceHalf : item.price;
+        return `₹${price?.toFixed(2)}`;
     }
     return `₹${item.price.toFixed(2)}`;
   }
@@ -70,33 +57,33 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
               </div>
           </div>
         </Card>
+        
+        {hasHalfPrice && (
+            <RadioGroup 
+                defaultValue="half" 
+                onValueChange={(value: Size) => setSelectedSize(value)} 
+                className="flex items-center space-x-4 mt-2 justify-center bg-muted p-1 rounded-md"
+            >
+                <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="half" id={`${item.id}-half`} />
+                    <Label htmlFor={`${item.id}-half`} className="text-sm cursor-pointer">Half</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="full" id={`${item.id}-full`} />
+                    <Label htmlFor={`${item.id}-full`} className="text-sm cursor-pointer">Full</Label>
+                </div>
+            </RadioGroup>
+        )}
+
         <div className="flex justify-between w-full gap-2 mt-2">
-            <Button onClick={handlePrimaryAction} className="flex-grow text-xs px-2 h-9">
+            <Button onClick={handleAddToCart} variant="secondary" className="flex-grow text-xs px-2 h-9">
                 <ShoppingCart className="mr-1 h-4 w-4" /> Add to Cart
+            </Button>
+            <Button onClick={handleOrderNow} className="flex-grow text-xs px-2 h-9">
+                Order Now
             </Button>
         </div>
       </div>
-
-      {hasHalfPrice && (
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Select a Size</DialogTitle>
-              <DialogDescription>
-                Choose a portion size for {item.name}.
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter className="sm:justify-center gap-4">
-              <Button onClick={() => handleAddToCart('half')} variant="outline" className="flex-1">
-                Half - ₹{item.priceHalf?.toFixed(2)}
-              </Button>
-              <Button onClick={() => handleAddToCart('full')} className="flex-1">
-                Full - ₹{item.price.toFixed(2)}
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      )}
     </>
   );
 }
