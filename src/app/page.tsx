@@ -6,7 +6,7 @@ import MenuItemCard from "@/components/MenuItemCard";
 import { Star, ChefHat } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { getFeaturedMenuItems, getHeroImage } from "@/lib/mongodb";
+import { getFeaturedMenuItems, getHeroImage, getAboutPageImages } from "@/lib/mongodb";
 import { unstable_noStore as noStore } from 'next/cache';
 import type { MenuItem } from "@/lib/types";
 
@@ -31,21 +31,44 @@ async function getFeaturedItems(): Promise<MenuItem[]> {
     }
 }
 
-async function getHeroImageSrc(): Promise<string> {
+async function getData() {
     noStore();
     try {
-        const heroImage = await getHeroImage();
-        return heroImage || "https://placehold.co/1920x1080.png";
+        const [heroImage, aboutImages, featuredItems] = await Promise.all([
+            getHeroImage(),
+            getAboutPageImages(),
+            getFeaturedMenuItems(),
+        ]);
+
+        const serializedItems = featuredItems.map(item => ({
+            id: item._id.toString(),
+            name: item.name,
+            description: item.description,
+            price: item.price,
+            priceHalf: item.priceHalf,
+            category: item.category,
+            image: item.image,
+            featured: item.featured || false,
+        }));
+
+        return {
+            heroImageSrc: heroImage || "https://placehold.co/1920x1080.png",
+            culinaryStoryImageSrc: aboutImages.aboutCulinaryStoryImage || "https://placehold.co/800x600.png",
+            featuredItems: serializedItems,
+        };
     } catch (error) {
-        console.error("Failed to fetch hero image:", error);
-        return "https://placehold.co/1920x1080.png";
+        console.error("Failed to fetch page data:", error);
+        return {
+            heroImageSrc: "https://placehold.co/1920x1080.png",
+            culinaryStoryImageSrc: "https://placehold.co/800x600.png",
+            featuredItems: [],
+        };
     }
 }
 
 
 export default async function Home() {
-  const featuredItems = await getFeaturedItems();
-  const heroImageSrc = await getHeroImageSrc();
+  const { heroImageSrc, culinaryStoryImageSrc, featuredItems } = await getData();
 
   const testimonials = [
     { name: "Sarah J.", quote: "The best Italian food I've had outside of Italy! The atmosphere is cozy and the service is impeccable." },
@@ -99,7 +122,7 @@ export default async function Home() {
       <section className="py-12 md:py-20 bg-secondary/50">
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center gap-10">
             <div className="md:w-1/2">
-                <Image src="https://placehold.co/800x600.png" width={800} height={600} alt="Our Restaurant" className="rounded-lg shadow-xl" data-ai-hint="restaurant interior" />
+                <Image src={culinaryStoryImageSrc} width={800} height={600} alt="Our Restaurant" className="rounded-lg shadow-xl" data-ai-hint="restaurant interior" />
             </div>
             <div className="md:w-1/2 text-center md:text-left">
                 <ChefHat className="h-10 w-10 text-primary mx-auto md:mx-0 mb-3" />

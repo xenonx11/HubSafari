@@ -3,13 +3,38 @@ import { Separator } from "@/components/ui/separator";
 import { ChefHat, Heart, MapPin } from "lucide-react";
 import { Metadata } from "next";
 import Image from "next/image";
+import { getAboutPageImages } from "@/lib/mongodb";
+import { unstable_noStore as noStore } from "next/cache";
 
 export const metadata: Metadata = {
     title: "About Us - HubSafari",
     description: "Learn about the story, mission, and team behind HubSafari.",
 };
 
-export default function AboutPage() {
+async function getData() {
+    noStore();
+    try {
+        const aboutImages = await getAboutPageImages();
+        return {
+            ourStoryImage: aboutImages.aboutOurStoryImage || "https://placehold.co/800x600.png",
+            chefLeoAvatar: aboutImages.aboutChefLeoAvatar || "https://placehold.co/200x200.png",
+            mariaAvatar: aboutImages.aboutMariaAvatar || "https://placehold.co/200x200.png",
+            sofiaAvatar: aboutImages.aboutSofiaAvatar || "https://placehold.co/200x200.png",
+        };
+    } catch (error) {
+        console.error("Failed to fetch about page images:", error);
+        return {
+            ourStoryImage: "https://placehold.co/800x600.png",
+            chefLeoAvatar: "https://placehold.co/200x200.png",
+            mariaAvatar: "https://placehold.co/200x200.png",
+            sofiaAvatar: "https://placehold.co/200x200.png",
+        };
+    }
+}
+
+export default async function AboutPage() {
+    const { ourStoryImage, chefLeoAvatar, mariaAvatar, sofiaAvatar } = await getData();
+
     return (
         <div className="bg-secondary/30">
             <div className="container mx-auto px-4 py-16 md:py-24">
@@ -30,7 +55,7 @@ export default function AboutPage() {
                         </p>
                     </div>
                     <div>
-                        <Image src="https://placehold.co/800x600.png" width={800} height={600} alt="Chef Leo" className="rounded-lg shadow-xl" data-ai-hint="chef portrait"/>
+                        <Image src={ourStoryImage} width={800} height={600} alt="Chef Leo" className="rounded-lg shadow-xl" data-ai-hint="chef portrait"/>
                     </div>
                 </div>
 
@@ -64,7 +89,7 @@ export default function AboutPage() {
                     <div className="mt-12 flex justify-center gap-8 md:gap-16 flex-wrap">
                         <div className="flex flex-col items-center">
                             <Avatar className="h-32 w-32 mb-4 border-4 border-primary">
-                                <AvatarImage src="https://placehold.co/200x200.png" alt="Chef Leo" data-ai-hint="male chef"/>
+                                <AvatarImage src={chefLeoAvatar} alt="Chef Leo" data-ai-hint="male chef"/>
                                 <AvatarFallback>CL</AvatarFallback>
                             </Avatar>
                             <h4 className="text-xl font-headline font-semibold">Chef Leo</h4>
@@ -72,7 +97,7 @@ export default function AboutPage() {
                         </div>
                         <div className="flex flex-col items-center">
                             <Avatar className="h-32 w-32 mb-4 border-4 border-primary">
-                                <AvatarImage src="https://placehold.co/200x200.png" alt="Maria" data-ai-hint="female manager"/>
+                                <AvatarImage src={mariaAvatar} alt="Maria" data-ai-hint="female manager"/>
                                 <AvatarFallback>M</AvatarFallback>
                             </Avatar>
                             <h4 className="text-xl font-headline font-semibold">Maria</h4>
@@ -80,7 +105,7 @@ export default function AboutPage() {
                         </div>
                         <div className="flex flex-col items-center">
                             <Avatar className="h-32 w-32 mb-4 border-4 border-primary">
-                                <AvatarImage src="https://placehold.co/200x200.png" alt="Sofia" data-ai-hint="pastry chef"/>
+                                <AvatarImage src={sofiaAvatar} alt="Sofia" data-ai-hint="pastry chef"/>
                                 <AvatarFallback>S</AvatarFallback>
                             </Avatar>
                             <h4 className="text-xl font-headline font-semibold">Sofia</h4>

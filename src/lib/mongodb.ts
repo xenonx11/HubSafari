@@ -62,6 +62,28 @@ export async function updateHeroImage(imageUrl: string) {
     );
 }
 
+// About Page Settings
+export async function getAboutPageImages() {
+    const collection = await getSiteSettingsCollection();
+    const imageKeys = ['aboutOurStoryImage', 'aboutCulinaryStoryImage', 'aboutChefLeoAvatar', 'aboutMariaAvatar', 'aboutSofiaAvatar'];
+    const settings = await collection.find({ name: { $in: imageKeys } }).toArray();
+    const images: { [key: string]: string | null } = {};
+    imageKeys.forEach(key => {
+        const setting = settings.find(s => s.name === key);
+        images[key] = setting ? setting.value : null;
+    });
+    return images;
+}
+
+export async function updateAboutImage(imageKey: string, imageUrl: string) {
+    const collection = await getSiteSettingsCollection();
+    return collection.updateOne(
+        { name: imageKey },
+        { $set: { value: imageUrl } },
+        { upsert: true }
+    );
+}
+
 
 // Menu Item functions
 export async function getFeaturedMenuItems() {
