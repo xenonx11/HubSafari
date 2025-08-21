@@ -55,7 +55,7 @@ export default async function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative h-[50vh] md:h-[70vh] w-full flex items-center justify-center text-center text-white">
+      <section className="relative h-[60vh] md:h-screen w-full flex items-center justify-center text-center text-white">
         <div className="absolute inset-0 bg-black/50 z-10" />
         <Image src={heroImageSrc} layout="fill" objectFit="cover" alt="Ambiance of the restaurant" className="z-0" data-ai-hint="restaurant ambiance" priority />
         <div className="relative z-20 container mx-auto px-4">
