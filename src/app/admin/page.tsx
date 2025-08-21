@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from '@/components/ui/button';
-import { ClipboardList, LogOut, Settings, Users } from "lucide-react";
+import { ClipboardList, LogOut, Settings } from "lucide-react";
 import Link from "next/link";
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -35,7 +35,6 @@ export default function AdminDashboardPage() {
                     <Skeleton className="h-4 w-1/3 mt-4" />
                 </div>
                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <Skeleton className="h-24 w-full" />
                     <Skeleton className="h-24 w-full" />
                     <Skeleton className="h-24 w-full" />
                  </div>
@@ -74,18 +73,7 @@ export default function AdminDashboardPage() {
                             <Settings className="h-8 w-8 text-primary" />
                             <div>
                                 <CardTitle>Site Settings</CardTitle>
-                                <CardDescription>Update hero image and other settings.</CardDescription>
-                            </div>
-                        </CardHeader>
-                    </Card>
-                </Link>
-                <Link href="/admin/settings/about">
-                     <Card className="hover:bg-secondary/50 transition-colors">
-                        <CardHeader className="flex flex-row items-center gap-4">
-                            <Users className="h-8 w-8 text-primary" />
-                            <div>
-                                <CardTitle>About Us Settings</CardTitle>
-                                <CardDescription>Update images on the About Us page.</CardDescription>
+                                <CardDescription>Update hero, about us images, and other settings.</CardDescription>
                             </div>
                         </CardHeader>
                     </Card>
