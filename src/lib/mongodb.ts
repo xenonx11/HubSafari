@@ -36,12 +36,34 @@ export async function connectToDatabase() {
   }
 }
 
+async function getSiteSettingsCollection(): Promise<Collection<any>> {
+    const { db } = await connectToDatabase();
+    return db.collection('siteSettings');
+}
+
 export async function getMenuItemsCollection(): Promise<Collection<MenuItem>> {
     const { db } = await connectToDatabase();
     return db.collection<MenuItem>('menuItems');
 }
 
-// Helper functions to interact with the database
+// Site Settings
+export async function getHeroImage() {
+    const collection = await getSiteSettingsCollection();
+    const settings = await collection.findOne({ name: 'heroImage' });
+    return settings ? settings.value : null;
+}
+
+export async function updateHeroImage(imageUrl: string) {
+    const collection = await getSiteSettingsCollection();
+    return collection.updateOne(
+        { name: 'heroImage' },
+        { $set: { value: imageUrl } },
+        { upsert: true }
+    );
+}
+
+
+// Menu Item functions
 export async function getFeaturedMenuItems() {
     const collection = await getMenuItemsCollection();
     // find returns a cursor, so we need to convert it to an array

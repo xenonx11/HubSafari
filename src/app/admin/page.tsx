@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from '@/components/ui/button';
-import { ClipboardList, LogOut } from "lucide-react";
+import { ClipboardList, LogOut, Settings } from "lucide-react";
 import Link from "next/link";
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -36,6 +36,7 @@ export default function AdminDashboardPage() {
                 </div>
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Skeleton className="h-24 w-full" />
+                    <Skeleton className="h-24 w-full" />
                  </div>
             </div>
         )
@@ -54,7 +55,7 @@ export default function AdminDashboardPage() {
                 </Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-md">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl">
                 <Link href="/admin/menu">
                     <Card className="hover:bg-secondary/50 transition-colors">
                         <CardHeader className="flex flex-row items-center gap-4">
@@ -62,6 +63,17 @@ export default function AdminDashboardPage() {
                             <div>
                                 <CardTitle>Manage Menu</CardTitle>
                                 <CardDescription>Add, edit, or remove menu items.</CardDescription>
+                            </div>
+                        </CardHeader>
+                    </Card>
+                </Link>
+                <Link href="/admin/settings">
+                    <Card className="hover:bg-secondary/50 transition-colors">
+                        <CardHeader className="flex flex-row items-center gap-4">
+                            <Settings className="h-8 w-8 text-primary" />
+                            <div>
+                                <CardTitle>Site Settings</CardTitle>
+                                <CardDescription>Update hero image and other settings.</CardDescription>
                             </div>
                         </CardHeader>
                     </Card>

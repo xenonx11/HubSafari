@@ -6,7 +6,7 @@ import MenuItemCard from "@/components/MenuItemCard";
 import { Star, ChefHat } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { getFeaturedMenuItems } from "@/lib/mongodb";
+import { getFeaturedMenuItems, getHeroImage } from "@/lib/mongodb";
 import { unstable_noStore as noStore } from 'next/cache';
 import type { MenuItem } from "@/lib/types";
 
@@ -30,9 +30,21 @@ async function getFeaturedItems(): Promise<MenuItem[]> {
     }
 }
 
+async function getHeroImageSrc(): Promise<string> {
+    noStore();
+    try {
+        const heroImage = await getHeroImage();
+        return heroImage || "https://placehold.co/1920x1080.png";
+    } catch (error) {
+        console.error("Failed to fetch hero image:", error);
+        return "https://placehold.co/1920x1080.png";
+    }
+}
+
 
 export default async function Home() {
   const featuredItems = await getFeaturedItems();
+  const heroImageSrc = await getHeroImageSrc();
 
   const testimonials = [
     { name: "Sarah J.", quote: "The best Italian food I've had outside of Italy! The atmosphere is cozy and the service is impeccable." },
@@ -45,7 +57,7 @@ export default async function Home() {
       {/* Hero Section */}
       <section className="relative h-[50vh] md:h-[70vh] w-full flex items-center justify-center text-center text-white">
         <div className="absolute inset-0 bg-black/50 z-10" />
-        <Image src="https://placehold.co/1920x1080.png" layout="fill" objectFit="cover" alt="Ambiance of the restaurant" className="z-0" data-ai-hint="restaurant ambiance" />
+        <Image src={heroImageSrc} layout="fill" objectFit="cover" alt="Ambiance of the restaurant" className="z-0" data-ai-hint="restaurant ambiance" priority />
         <div className="relative z-20 container mx-auto px-4">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold font-headline tracking-tight text-shadow-lg">
             Savor the Moment
