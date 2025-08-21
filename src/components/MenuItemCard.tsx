@@ -30,12 +30,19 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
     if (hasHalfPrice && !showSizeSelector) {
       setShowSizeSelector(true);
       // Set a default selection when showing the options for the first time
-      setSelectedSize('half');
+      if (item.priceHalf) {
+          setSelectedSize('half');
+      }
       return;
     }
 
     // Otherwise, perform the action
     addToCart(item, selectedSize);
+    
+    // Hide the selector after the action is performed
+    if (hasHalfPrice) {
+        setShowSizeSelector(false);
+    }
     
     if (action === 'orderNow') {
       setCartOpen(true);
