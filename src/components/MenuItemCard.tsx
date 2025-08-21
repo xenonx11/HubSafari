@@ -22,26 +22,42 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
   const { toast } = useToast();
   
   const hasHalfPrice = item.priceHalf && item.priceHalf > 0;
-  const [selectedSize, setSelectedSize] = useState<Size>(hasHalfPrice ? 'half' : 'full');
+  const [selectedSize, setSelectedSize] = useState<Size>('full');
+  const [showSizeSelector, setShowSizeSelector] = useState(false);
 
-  const handleAddToCart = () => {
+  const handleActionClick = (action: 'addToCart' | 'orderNow') => {
+    // If the item has size options but the user hasn't seen them yet, just show them.
+    if (hasHalfPrice && !showSizeSelector) {
+      setShowSizeSelector(true);
+      // Set a default selection when showing the options for the first time
+      setSelectedSize('half');
+      return;
+    }
+
+    // Otherwise, perform the action
     addToCart(item, selectedSize);
-    toast({
-      title: "Added to cart!",
-      description: `${item.name} (${selectedSize}) is waiting for you.`,
-    });
+    
+    if (action === 'orderNow') {
+      setCartOpen(true);
+    } else {
+      toast({
+        title: "Added to cart!",
+        description: `${item.name} (${selectedSize}) is waiting for you.`,
+      });
+    }
   };
-  
-  const handleOrderNow = () => {
-    addToCart(item, selectedSize);
-    setCartOpen(true);
-  }
 
   const getPriceDisplay = () => {
-    if (hasHalfPrice) {
+    // If selector is visible, show price for the selected size
+    if (hasHalfPrice && showSizeSelector) {
         const price = selectedSize === 'half' ? item.priceHalf : item.price;
         return `₹${price?.toFixed(2)}`;
     }
+    // If it has half price but selector is not shown, show a range or default full price
+    if (hasHalfPrice) {
+        return `From ₹${item.priceHalf?.toFixed(2)}`;
+    }
+    // Default case: only full price
     return `₹${item.price.toFixed(2)}`;
   }
 
@@ -58,9 +74,9 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
           </div>
         </Card>
         
-        {hasHalfPrice && (
+        {hasHalfPrice && showSizeSelector && (
             <RadioGroup 
-                defaultValue="half" 
+                value={selectedSize} 
                 onValueChange={(value: Size) => setSelectedSize(value)} 
                 className="flex items-center space-x-4 mt-2 justify-center bg-muted p-1 rounded-md"
             >
@@ -76,10 +92,10 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
         )}
 
         <div className="flex justify-between w-full gap-2 mt-2">
-            <Button onClick={handleAddToCart} variant="secondary" className="flex-grow text-xs px-2 h-9">
+            <Button onClick={() => handleActionClick('addToCart')} variant="secondary" className="flex-grow text-xs px-2 h-9">
                 <ShoppingCart className="mr-1 h-4 w-4" /> Add to Cart
             </Button>
-            <Button onClick={handleOrderNow} className="flex-grow text-xs px-2 h-9">
+            <Button onClick={() => handleActionClick('orderNow')} className="flex-grow text-xs px-2 h-9">
                 Order Now
             </Button>
         </div>
