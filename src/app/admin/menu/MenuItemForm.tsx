@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import type { MenuItem } from '@/lib/types';
 import { useEffect } from 'react';
@@ -27,7 +26,7 @@ const formSchema = z.object({
   description: z.string().min(10, { message: 'Description must be at least 10 characters.' }),
   price: z.coerce.number().min(0.01, { message: 'Price must be a positive number.' }),
   priceHalf: z.coerce.number().optional().nullable(),
-  category: z.enum(['Appetizers', 'Main Courses', 'Desserts', 'Drinks']),
+  category: z.string().min(1, { message: 'Category cannot be empty.' }),
   image: z.string().min(1, { message: 'Please upload an image.' }),
   featured: z.boolean().default(false),
 });
@@ -63,7 +62,7 @@ export default function MenuItemForm({ open, onOpenChange, onSubmit, item }: Men
           description: '',
           price: 0,
           priceHalf: undefined,
-          category: 'Main Courses',
+          category: '',
           image: '',
           featured: false,
         });
@@ -162,21 +161,11 @@ export default function MenuItemForm({ open, onOpenChange, onSubmit, item }: Men
                   name="category"
                   render={({ field }) => (
                       <FormItem>
-                      <FormLabel>Category</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                          <SelectTrigger>
-                              <SelectValue placeholder="Select a category" />
-                          </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                              <SelectItem value="Appetizers">Appetizers</SelectItem>
-                              <SelectItem value="Main Courses">Main Courses</SelectItem>
-                              <SelectItem value="Desserts">Desserts</SelectItem>
-                              <SelectItem value="Drinks">Drinks</SelectItem>
-                          </SelectContent>
-                      </Select>
-                      <FormMessage />
+                        <FormLabel>Category</FormLabel>
+                        <FormControl>
+                          <Input placeholder="e.g. Main Courses, Biryanis" {...field} />
+                        </FormControl>
+                        <FormMessage />
                       </FormItem>
                   )}
                   />

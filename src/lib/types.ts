@@ -1,6 +1,7 @@
+
 import { ObjectId } from "mongodb";
 
-export type-input Size = 'half' | 'full';
+export type Size = 'half' | 'full';
 
 export interface MenuItem {
   // When creating a new menu item, _id is optional because MongoDB will generate it.
@@ -13,7 +14,7 @@ export interface MenuItem {
   price: number; // This will now be the 'full' price
   priceHalf?: number; // Optional 'half' price
   image: string;
-  category: 'Appetizers' | 'Main Courses' | 'Desserts' | 'Drinks';
+  category: string;
   featured?: boolean;
 }
 

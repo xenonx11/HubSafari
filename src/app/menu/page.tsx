@@ -36,7 +36,7 @@ async function getMenuItems(): Promise<MenuItem[]> {
 
 export default async function MenuPage() {
     const menuItems = await getMenuItems();
-    const categories: ('Appetizers' | 'Main Courses' | 'Desserts' | 'Drinks')[] = ['Appetizers', 'Main Courses', 'Desserts', 'Drinks'];
+    const categories = [...new Set(menuItems.map(item => item.category))];
     
     return (
         <div className="container mx-auto px-4 py-8 md:py-12">
@@ -45,7 +45,7 @@ export default async function MenuPage() {
                 <p className="mt-2 text-md text-muted-foreground">Crafted with passion, served with pride.</p>
             </div>
             
-            <Tabs defaultValue="Appetizers" className="w-full">
+            <Tabs defaultValue={categories[0] || ''} className="w-full">
                 <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-auto">
                     {categories.map(category => (
                          <TabsTrigger key={category} value={category} className="py-2 text-sm">{category}</TabsTrigger>
