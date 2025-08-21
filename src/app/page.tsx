@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -66,7 +67,7 @@ export default async function Home() {
             <p className="mt-2 text-md text-muted-foreground">Handpicked by our chef, loved by our guests.</p>
           </div>
           {featuredItems.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
               {featuredItems.map((item) => (
                 <MenuItemCard key={item.id} item={item} />
               ))}
