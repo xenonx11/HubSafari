@@ -2,11 +2,11 @@
 import { getAllMenuItems } from '@/lib/mongodb';
 import type { MenuItem } from '@/lib/types';
 import AdminMenuClientPage from './AdminMenuClientPage';
-import { unstable_noStore as noStore } from 'next/cache';
 
 // This is now a React Server Component (RSC) responsible for data fetching.
 export default async function AdminMenuPage() {
-    noStore(); // Ensure data is fetched dynamically
+    // Data is fetched dynamically by default when not explicitly cached.
+    // Revalidation is handled by server actions, ensuring fresh data after edits.
     
     let menuItems: MenuItem[] = [];
     try {

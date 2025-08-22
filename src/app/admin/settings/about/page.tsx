@@ -1,10 +1,8 @@
 
 import { getAboutPageImages } from '@/lib/mongodb';
 import AboutSettingsClientPage from './AboutSettingsClientPage';
-import { unstable_noStore as noStore } from 'next/cache';
 
 export default async function AboutSettingsPage() {
-    noStore();
     
     let aboutImages = {};
     try {

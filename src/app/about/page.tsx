@@ -4,7 +4,6 @@ import { ChefHat, Heart, MapPin } from "lucide-react";
 import { Metadata } from "next";
 import Image from "next/image";
 import { getAboutPageImages } from "@/lib/mongodb";
-import { unstable_noStore as noStore } from "next/cache";
 
 export const metadata: Metadata = {
     title: "About Us - HubSafari",
@@ -12,7 +11,6 @@ export const metadata: Metadata = {
 };
 
 async function getData() {
-    noStore();
     try {
         const aboutImages = await getAboutPageImages();
         return {

@@ -7,32 +7,9 @@ import { Star, ChefHat } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { getFeaturedMenuItems, getHeroImage, getAboutPageImages } from "@/lib/mongodb";
-import { unstable_noStore as noStore } from 'next/cache';
 import type { MenuItem } from "@/lib/types";
 
-async function getFeaturedItems(): Promise<MenuItem[]> {
-    noStore(); // Ensures the data is fetched dynamically on every request
-    try {
-        const items = await getFeaturedMenuItems();
-        // Manually map to a plain object to avoid serialization errors
-        return items.map(item => ({
-            id: item._id.toString(),
-            name: item.name,
-            description: item.description,
-            price: item.price,
-            priceHalf: item.priceHalf,
-            category: item.category,
-            image: item.image,
-            featured: item.featured || false,
-        }));
-    } catch (error) {
-        console.error("Failed to fetch featured menu items:", error);
-        return []; // Return an empty array as a fallback
-    }
-}
-
 async function getData() {
-    noStore();
     try {
         const [heroImage, aboutImages, featuredItems] = await Promise.all([
             getHeroImage(),

@@ -1,10 +1,8 @@
 
 import { getHeroImage, getAboutPageImages } from '@/lib/mongodb';
 import SiteSettingsClientPage from './SiteSettingsClientPage';
-import { unstable_noStore as noStore } from 'next/cache';
 
 export default async function SiteSettingsPage() {
-    noStore();
     
     let heroImage = null;
     let aboutImages = {};

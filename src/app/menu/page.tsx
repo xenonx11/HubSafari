@@ -4,7 +4,6 @@ import MenuItemCard from "@/components/MenuItemCard";
 import { Metadata } from "next";
 import { getAllMenuItems } from "@/lib/mongodb";
 import type { MenuItem } from "@/lib/types";
-import { unstable_noStore as noStore } from 'next/cache';
 
 
 export const metadata: Metadata = {
@@ -13,7 +12,6 @@ export const metadata: Metadata = {
 };
 
 async function getMenuItems(): Promise<MenuItem[]> {
-    noStore();
     try {
         const items = await getAllMenuItems();
         // Manually map to a plain object to avoid serialization errors
